@@ -1,50 +1,117 @@
-const calculator = document.querySelector('.calculator');
 const screen = document.querySelector('.screen');
-const keys = document.querySelector('.keys');
+const clearBtn = document.querySelector('.clear');
+const equalBtn = document.querySelector('.equal');
+const signBtn = document.querySelector('.sign');
+const sqrtBtn = document.querySelector('.sqrt');
+const eraseBtn = document.querySelector('.erase');
+const decimalBtn = document.querySelector('.decimal');
+const numbers = Array.from(document.querySelectorAll('.number'));
+const operators = Array.from(document.querySelectorAll('.operator'));
 
+//sets initial value on screen to zero
+screen.value = 0;
 
+let firstNum;
+let selectedOperand;
 
-function generateKeys() {
-    for (let i = 0; i < 5; i++) {
-        row = document.createElement('div');
-        row.classList.add('row')
-        keys.appendChild(row);
-        for (let j = 0; j < 4; j++) {
-            key = document.createElement('div');
-            key.classList.add('key')
-            row.appendChild(key);
-        }
+//gives every number key an event listener which displays the number on screen
+numbers.map(number => number.addEventListener('click', displayNum));
+
+//gives every operator an event listener
+operators.map(operator => operator.addEventListener('click', operate));
+
+clearBtn.addEventListener('click', clearScreen);
+
+equalBtn.addEventListener('click', result);
+
+signBtn.addEventListener('click', signChange);
+
+sqrtBtn.addEventListener('click', sqrt);
+
+eraseBtn.addEventListener('click', erase);
+
+decimalBtn.addEventListener('click', decimal);
+
+//if zero is the first digit, removes it. Then, set screen display value to the clicked number
+function displayNum (e) {
+    if (screen.value == 0) screen.value = "";
+    screen.value += e.target.value
+}
+
+function erase () {
+    screen.value = screen.value.slice(0,-1);
+}
+
+function clearScreen() {
+    screen.value = 0;
+}
+
+function signChange () {
+    screen.value *= -1
+}
+
+function sqrt () {
+    screen.value **= (1/2)
+}
+
+function decimal () {
+    if (screen.value.indexOf('.') != -1) return;
+    screen.value += '.';
+}
+
+//saves first input and whatever operator was clicked. Then, resets screen for next number input
+function operate(e) {
+    firstNum = screen.value;
+    selectedOperand = e.target.value;
+    screen.value = "";
+}
+
+//runs the operation clicked on first input and current input
+function result () {
+    switch (selectedOperand) {
+        case 'plus':
+            screen.value = sum(firstNum,screen.value)
+            break;
+        case 'minus':
+            screen.value = subtract(firstNum,screen.value)
+            break;
+        case 'multiply':
+            screen.value = multiply(firstNum,screen.value);
+            break;
+        case 'divide':
+            if (screen.value == 0) return screen.value = 'Bruh, you cant divide by 0!';
+            screen.value = divide(firstNum,screen.value)
+            break;
+        case 'power':
+            screen.value = power(firstNum,screen.value)
+            break;
     }
 }
 
-generateKeys();
+function sum (a, b) {
+    return parseFloat(a) + parseFloat(b);
+}
 
-const allKeys = Array.from(document.querySelectorAll('.key'));
+function subtract (a, b) {
+    return parseFloat(a) - parseFloat(b);
+}
 
-const buttons = allKeys.map(key => key.appendChild(document.createElement('button')))
+function multiply (a, b) {
+    return (parseFloat(a) * parseFloat(b)).toFixed(12);
+}
 
+function divide (a, b) {
+    return parseFloat(a) / parseFloat(b);
+}
 
-buttons[0].textContent = 'sqrt';
-buttons[1].textContent = 'x2';
-buttons[2].textContent = 'del';
-buttons[3].textContent = '÷';
-buttons[4].textContent = '7';
-buttons[5].textContent = '8';
-buttons[6].textContent = '9';
-buttons[7].textContent = '*';
-buttons[8].textContent = '4';
-buttons[9].textContent = '5';
-buttons[10].textContent = '6';
-buttons[11].textContent = '-';
-buttons[12].textContent = '1';
-buttons[13].textContent = '2';
-buttons[14].textContent = '3';
-buttons[15].textContent = '+';
-buttons[16].textContent = 'C';
-buttons[17].textContent = '0';
-buttons[18].textContent = ',';
-buttons[19].textContent = '=';
+function power (a, b) {
+    return parseFloat(a) ** parseFloat(b);
+}
 
 
-
-//need to make button color darker when click and press to make it feel like you clicked.
+//instead of saving the first input to variable, jsut save it to an array
+//two options:
+//1. make selectedOperand an array save the operand into it.
+//2. save the first num and selectedOperand into same array
+        //then, somehow, do all functions in order within array
+//equals will then do that arrra

@@ -8,41 +8,61 @@ const eraseBtn = document.querySelector('.erase');
 const decimalBtn = document.querySelector('.decimal');
 const numbers = Array.from(document.querySelectorAll('.number'));
 const operators = Array.from(document.querySelectorAll('.operator'));
+let firstNum;
+let selectedOperand;
 
 //sets initial value on screen to zero
 screen.value = 0;
 
-let firstNum;
-let selectedOperand;
-
 //gives every number key an event listener which displays the number on screen
 numbers.map(number => number.addEventListener('click', displayNum));
-
 html.addEventListener('keydown', function (e) {
     if (!Number.isInteger(parseInt(e.key))) return;
     if (screen.value == 0) screen.value = "";
     screen.value += e.key;
 });
 
-//gives every operator an event listener
-operators.map(operator => operator.addEventListener('click', operate));
-
 clearBtn.addEventListener('click', clearScreen);
+html.addEventListener('keydown', function (e) {
+    if (e.key == 'c' || e.key == 'Escape') {
+        clearScreen();
+    }
+});
 
 equalBtn.addEventListener('click', result);
+html.addEventListener('keydown', function (e) {
+    if (e.key == '=' || e.key == 'Enter') {
+        result();
+    }
+});
+
+eraseBtn.addEventListener('click', erase);
+html.addEventListener('keydown', function (e) {
+    if (e.key == 'Backspace') {
+        erase();
+    }
+});
+
+decimalBtn.addEventListener('click', decimal);
+html.addEventListener('keydown', function (e) {
+    if (e.key == '.') {
+        decimal();
+    }
+});
 
 signBtn.addEventListener('click', signChange);
 
 sqrtBtn.addEventListener('click', sqrt);
 
-eraseBtn.addEventListener('click', erase);
-
-decimalBtn.addEventListener('click', decimal);
+//gives every operator an event listener
+operators.map(operator => {
+    operator.addEventListener('click', operate)
+});
 
 //if zero is the first digit, removes it. Then, set screen display value to the clicked number
 function displayNum (e) {
     if (screen.value == 0) screen.value = "";
-    screen.value += e.target.value
+    screen.value += e.target.value;
 }
 
 function erase () {

@@ -1,3 +1,4 @@
+const html = document.querySelector('html');
 const screen = document.querySelector('.screen');
 const clearBtn = document.querySelector('.clear');
 const equalBtn = document.querySelector('.equal');
@@ -16,6 +17,12 @@ let selectedOperand;
 
 //gives every number key an event listener which displays the number on screen
 numbers.map(number => number.addEventListener('click', displayNum));
+
+html.addEventListener('keydown', function (e) {
+    if (!Number.isInteger(parseInt(e.key))) return;
+    if (screen.value == 0) screen.value = "";
+    screen.value += e.key;
+});
 
 //gives every operator an event listener
 operators.map(operator => operator.addEventListener('click', operate));

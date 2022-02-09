@@ -16,13 +16,16 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-image: url("./img/background.jpg");
+    background-size: 500px;
 }
 
 h1 {
-    font-size: 50px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 75px;
+    font-family: 'Orbitron', sans-serif;
     color: salmon;
     margin-bottom: 100px;
+    background-color: white;
 }
 
 .calculator {
@@ -59,7 +62,7 @@ h1 {
 button {
     height: 100%;
     background-color: rgb(245, 245, 245);;
-    border: 1px solid none;
+    border: 1px solid black;
     border-radius: 5px;
 }
 
